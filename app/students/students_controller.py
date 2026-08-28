@@ -13,7 +13,7 @@ def find_all(request: Request):
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
-        message="se han obtenido exitosamente los estudiantes",
+        message="successfully recruited students",
         data = data
     )
 
@@ -23,7 +23,7 @@ def find_by_id(request: Request, student_id: str):
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
-        message="estudiante obtenido con exito",
+        message="student successfully obtained",
         data = data
     )
 
@@ -34,7 +34,7 @@ def create(request: Request, body: CreateStudentDto):
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=201,
-        message="estudiante creado exitosamente",
+        message="student successfully created",
         data = data
     )
 
@@ -45,7 +45,7 @@ def update(request: Request, student_id: str, body: UpdateStudentDto):
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
-        message="estudiante correctamente actualizado",
+        message="correctly updated student",
         data = data
     )
 
@@ -56,6 +56,6 @@ def delete(request: Request, student_id: str):
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
-        message="estudiante eliminado correctamente",
+        message="student successfully deleted.",
         data = deleted
     )
