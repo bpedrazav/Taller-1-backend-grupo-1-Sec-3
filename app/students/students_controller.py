@@ -3,6 +3,7 @@ from app.shared.standardization import ApiResponse
 from app.pets.pets_service import pets_service
 from app.students.students_schemas import CreateStudentDto, Student, UpdateStudentDto
 from app.students.students_service import students_service
+from app.shared.exceptions import StudentNotFoundException  
 
 router = APIRouter(prefix="/api/students", tags=["Students"])
 
@@ -14,17 +15,23 @@ def find_all(request: Request):
         path=request.url.path,
         code=200,
         message="successfully recruited students",
-        data = data
+        data=data
     )
 
-@router.get("/{student_id}, response_model=ApiResponse[Student]")
+
+@router.get("/{student_id}", response_model=ApiResponse[Student])
 def find_by_id(request: Request, student_id: str):
     data = students_service.find_by_id(student_id)
+    
+
+    if not data:
+        raise StudentNotFoundException()
+
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
         message="student successfully obtained",
-        data = data
+        data=data
     )
 
 
@@ -35,27 +42,38 @@ def create(request: Request, body: CreateStudentDto):
         path=request.url.path,
         code=201,
         message="student successfully created",
-        data = data
+        data=data
     )
 
 
 @router.patch("/{student_id}", response_model=ApiResponse[Student])
 def update(request: Request, student_id: str, body: UpdateStudentDto):
     data = students_service.update(student_id, body)
+    
+    
+    if not data:
+        raise StudentNotFoundException()
+
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
         message="correctly updated student",
-        data = data
+        data=data
     )
+
 
 @router.delete("/{student_id}", response_model=ApiResponse[Student])
 def delete(request: Request, student_id: str):
     deleted = students_service.delete(student_id)
+    
+    
+    if not deleted:
+        raise StudentNotFoundException()
+
     pets_service.delete_all_for_student(student_id)
     return ApiResponse.respuesta_success(
         path=request.url.path,
         code=200,
         message="student successfully deleted.",
-        data = deleted
+        data=deleted
     )
